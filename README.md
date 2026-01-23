@@ -8,7 +8,9 @@
 - UPDATE: If you use an SSH key for your **root** user, you will need to use an SSH key for your **grader** account, which means that we will need the **private key** for this grader account (along with the passphrase for this private key if there is one). **INCLUDE THIS SSH KEY AND (if applicable) PASSPHRASE ALONG WITH THE PASSWORD FOR THE GRADER ACCOUNT** in your submission.
 - **Test logging** into the grader account before submission. If we cannot log into this account, we cannot grade your homework and there may be a penalty. Please indicate all log in information for the TAs carefully.
 
-## Link to our site, which has: (TODO)
+## Link to our site, which has:
+https://cse135vrc.site
+
 - homepage with team member info and homework links
 - about pages for each team member
 - favicon
