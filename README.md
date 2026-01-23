@@ -7,6 +7,7 @@
 ## The password for user "grader" on your Apache server
 
 ssh grader@142.93.88.250
+
 password: grader
 
 ## Link to our site, which has:
