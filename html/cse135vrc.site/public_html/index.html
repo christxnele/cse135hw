@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSE 135 - Team Site</title>
+</head>
+<body>
+    <header>
+        <h1>CSE 135</h1>
+        <p>Winter 2026</p>
+
+        <aside>
+            <h2>Team Members</h2>
+            <ul>
+                <li><a href="members/christinele.html">Christine Le</a></li>
+                <li><a href="members/ryansoe.html">Ryan Soe</a></li>
+                <li><a href="members/victoriatimofeev.html">Victoria Timofeev</a></li>
+            </ul>
+        </aside>
+    </header>
+
+    <main>
+        <section>
+            <h2>Homework 1</h2>
+            <nav>
+                <ul>
+                    <li><a href="hw1/hello.php">PHP</a></li>
+                    <li><a href="hw1/report.html">Report</a></li>
+                </ul>
+            </nav>
+        </section>
+
+        <section>
+            <h2>Homework 2</h2>
+            <p><abbr title="To be determined">TBD</abbr></p>
+        </section>
+
+        <section>
+            <h2>Analytics App</h2>
+            <p><abbr title="To be determined">TBD</abbr></p>
+        </section>
+    </main>
+
+    <footer>
+      <small>Made for CSE 135</small>
+    </footer>
+    
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toString();
+            document.getElementById('timestamp').textContent = 'Live @ ' + timeString;
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+    </script>
+</body>
+</html>
