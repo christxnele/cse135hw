@@ -19,7 +19,7 @@ https://cse135vrc.site
 - hw1/report.html
 
 ## Details of Github auto deploy setup (TODO)
-
+This project uses a simple GitHub Actions–based deployment pipeline that automatically deploys the site to a DigitalOcean server on every push to the main branch using SSH and rsync. The repository is organized into separate directories for each site, and a GitHub Actions workflow (.github/workflows/deploy.yml) checks out the code, configures SSH using a private key stored in GitHub Secrets, and synchronizes each directory to its corresponding web root under /var/www on the server. On the server side, a dedicated deploy user is created, granted access to the web directories, and configured with an SSH key whose private portion is added to GitHub Secrets along with the server IP and username. This setup enables fast, repeatable deployments using only native tools (SSH and rsync), avoids third-party deployment services, and keeps full control of the infrastructure, with an optional optimization to deploy only the sites whose files changed.
 
 ## Username/password info for logging into the site
 Username: ryan  
