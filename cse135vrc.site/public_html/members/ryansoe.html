@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About me — Ryan Soe</title>
+  <style>
+    :root{
+      --bg: #f6f4ef;
+      --ink: #111;
+      --muted: #6b6b6b;
+      --card: #ffffff;
+      --line: rgba(0,0,0,.22);
+      --shadow: 6px 6px 0 rgba(0,0,0,.12);
+    }
+
+    *{ box-sizing: border-box; }
+    body{
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.55;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 64px 20px 40px;
+      flex: 1;
+    }
+
+    /* Header */
+    header{
+      text-align: center;
+      margin-bottom: 46px;
+    }
+
+    .name{
+      font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+      font-size: clamp(44px, 6vw, 64px);
+      letter-spacing: -0.02em;
+      margin: 0 0 10px;
+      font-weight: 800;
+    }
+
+    .tagline{
+      margin: 0 0 18px;
+      font-size: 18px;
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .links{
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      justify-content: center;
+      margin-top: 8px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .links a{
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 12px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 8px 10px;
+      border-radius: 10px;
+      transition: transform .08s ease, background .12s ease;
+    }
+
+    .links a:hover{
+      background: rgba(0,0,0,.05);
+      transform: translateY(-1px);
+    }
+
+    /* Sections */
+    section{
+      margin-top: 56px;
+    }
+
+    .section-title{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+      font-size: 40px;
+      font-weight: 800;
+      margin: 0 0 14px;
+    }
+
+    .section-rule{
+      height: 1px;
+      background: var(--line);
+      max-width: 720px;
+      margin: 0 auto 22px;
+    }
+
+    /* Card */
+    .card{
+      background: var(--card);
+      border: 2px solid rgba(0,0,0,.25);
+      box-shadow: var(--shadow);
+      border-radius: 16px;
+      padding: 22px 22px;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .about{
+      color: #1a1a1a;
+      font-size: 16px;
+      margin: 0;
+    }
+
+    /* Icon style */
+    .icon{
+      width: 30px;
+      height: 30px;
+      display: inline-block;
+      transform: translateY(1px);
+    }
+
+    /* Footer */
+    footer{
+      padding: 32px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <h1 class="name">Ryan Soe</h1>
+      <p class="tagline">Full-stack developer building user-first software</p>
+
+      <ul class="links">
+        <li><a href="https://www.linkedin.com/in/ryan-soe/" target="_blank" rel="noreferrer">LinkedIn</a></li>
+        <li><a href="https://github.com/ryansoe" target="_blank" rel="noreferrer">GitHub</a></li>
+      </ul>
+    </header>
+
+    <section>
+      <h2 class="section-title">
+        <!-- simple inline icon (matches “little icon + serif title” vibe) -->
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 21V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v14"></path>
+          <path d="M8 3h8"></path>
+          <path d="M7 21h10"></path>
+          <path d="M8 9h8"></path>
+          <path d="M8 13h8"></path>
+        </svg>
+        About Me
+      </h2>
+      <div class="section-rule"></div>
+
+      <div class="card">
+        <p class="about">
+            Hey there! I'm Ryan, a CS major @ UC San Diego. I enjoy building creative projects, learning new tech, and making a positive impact through software. Feel free to reach out: rsoe@ucsd.edu
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    Back to <a href="../index.html">team page</a> * Made for CSE 135
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
+
