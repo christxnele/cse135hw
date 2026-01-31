@@ -97,37 +97,23 @@ def main():
     print("<html>")
     print("<head>")
     print("<title>Python Sessions - Page 1</title>")
-    print("<style>")
-    print("body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }")
-    print("h1 { color: #333; }")
-    print("form { background: #f4f4f4; padding: 20px; border-radius: 5px; margin: 20px 0; }")
-    print("label { display: block; margin: 10px 0 5px; font-weight: bold; }")
-    print("input[type='text'], input[type='email'] { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 3px; box-sizing: border-box; }")
-    print("button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 3px; cursor: pointer; margin: 10px 5px 0 0; }")
-    print("button:hover { background: #0056b3; }")
-    print(".info { background: #e7f3ff; padding: 15px; border-radius: 5px; margin: 20px 0; }")
-    print(".link { display: inline-block; margin: 10px 10px 0 0; color: #007bff; text-decoration: none; }")
-    print(".link:hover { text-decoration: underline; }")
-    print(".destroy-btn { background: #dc3545; }")
-    print(".destroy-btn:hover { background: #c82333; }")
-    print("</style>")
     print("</head>")
     print("<body>")
     
     print("<h1>Python Sessions - Page 1</h1>")
     print("<p>This page demonstrates server-side session management using Python CGI with cookies.</p>")
     
-    print("<div class='info'>")
+    print("<div>")
     if username or email or favorite_color:
         print("<h3>Current Session Data:</h3>")
         if username:
-            print(f"<p><strong>Username:</strong> {username}</p>")
+            print(f"<p><b>Username:</b> {username}</p>")
         if email:
-            print(f"<p><strong>Email:</strong> {email}</p>")
+            print(f"<p><b>Email:</b> {email}</p>")
         if favorite_color:
-            print(f"<p><strong>Favorite Color:</strong> {favorite_color}</p>")
+            print(f"<p><b>Favorite Color:</b> {favorite_color}</p>")
     else:
-        print("<p><strong>No session data set yet.</strong> Please enter some information below.</p>")
+        print("<p><b>No session data set yet.</b> Please enter some information below.</p>")
     print("</div>")
     
     print("<form action='/hw2/python/state-python-page1.py' method='POST'>")
@@ -142,17 +128,15 @@ def main():
     print("<button type='submit'>Save Data</button>")
     print("</form>")
     
-    print("<div>")
-    print("<a class='link' href='/hw2/python/state-python-page2.py'>Go to Page 2</a>")
-    print("<form action='/hw2/python/state-python-destroy.py' method='POST' style='display: inline; background: none; padding: 0;'>")
-    print("<button type='submit' class='destroy-btn'>Clear Session Data</button>")
+    print("<br/><br/>")
+    print("<a href='/hw2/python/state-python-page2.py'>Go to Page 2</a><br/>")
+    print("<form action='/hw2/python/state-python-destroy.py' method='POST'>")
+    print("<button type='submit'>Clear Session Data</button>")
     print("</form>")
-    print("</div>")
     
-    print("<div style='margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;'>")
-    print(f"<p><small>Current Time: {datetime.now().strftime('%a %b %d %H:%M:%S %Y')}</small></p>")
-    print(f"<p><small>Your IP Address: {os.environ.get('REMOTE_ADDR', 'Unknown')}</small></p>")
-    print("</div>")
+    print("<hr/>")
+    print(f"<p>Current Time: {datetime.now().strftime('%a %b %d %H:%M:%S %Y')}</p>")
+    print(f"<p>Your IP Address: {os.environ.get('REMOTE_ADDR', 'Unknown')}</p>")
     
     print("</body>")
     print("</html>")
