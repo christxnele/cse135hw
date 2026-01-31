@@ -73,17 +73,6 @@ func destroySession(sessionID string) {
 	}
 }
 
-func printHeader(sessionID string, destroy bool) {
-	fmt.Println("Cache-Control: no-cache")
-	if destroy {
-		fmt.Println("Set-Cookie: GOSESSID=deleted; expires=Thu, 01 Jan 1970 00:00:00 GMT; Path=/")
-	} else {
-		fmt.Printf("Set-Cookie: GOSESSID=%s; Path=/; Max-Age=%d\n", sessionID, sessionTimeout)
-	}
-	fmt.Println("Content-Type: text/html")
-	fmt.Println("")
-}
-
 func escapeHTML(s string) string {
 	s = strings.ReplaceAll(s, "&", "&amp;")
 	s = strings.ReplaceAll(s, "<", "&lt;")
@@ -92,113 +81,12 @@ func escapeHTML(s string) string {
 	return s
 }
 
-func printPage1(sessionData map[string]string) {
-	username := escapeHTML(sessionData["username"])
-	email := escapeHTML(sessionData["email"])
-	favoriteColor := escapeHTML(sessionData["favorite_color"])
-
-	fmt.Println(`<!DOCTYPE html>
-<html>
-<head><title>Go Sessions - Page 1</title></head>
-<body>
-<h1>Go Sessions - Page 1</h1>`)
-
-	if username != "" || email != "" || favoriteColor != "" {
-		fmt.Println("<h3>Current Session Data:</h3>")
-		if username != "" {
-			fmt.Printf("<p>Username: %s</p>\n", username)
-		}
-		if email != "" {
-			fmt.Printf("<p>Email: %s</p>\n", email)
-		}
-		if favoriteColor != "" {
-			fmt.Printf("<p>Favorite Color: %s</p>\n", favoriteColor)
-		}
-	} else {
-		fmt.Println("<p>No session data set yet.</p>")
-	}
-
-	fmt.Printf(`<hr>
-<h3>Enter Your Information:</h3>
-<form action='/hw2/go/state-go.cgi' method='POST'>
-<input type='hidden' name='action' value='save'>
-<label>Username <input type='text' name='username' value='%s'></label><br><br>
-<label>Email <input type='email' name='email' value='%s'></label><br><br>
-<label>Favorite Color <input type='text' name='favorite_color' value='%s'></label><br><br>
-<button type='submit'>Save Data</button>
-</form>
-
-<p><a href='/hw2/go/state-go.cgi?page=2'>Go to Page 2</a></p>
-
-<form action='/hw2/go/state-go.cgi' method='POST'>
-<input type='hidden' name='action' value='destroy'>
-<button type='submit'>Clear Session Data</button>
-</form>
-
-</body>
-</html>`, username, email, favoriteColor)
-}
-
-func printPage2(sessionData map[string]string) {
-	username := escapeHTML(sessionData["username"])
-	email := escapeHTML(sessionData["email"])
-	favoriteColor := escapeHTML(sessionData["favorite_color"])
-
-	fmt.Println(`<!DOCTYPE html>
-<html>
-<head><title>Go Sessions - Page 2</title></head>
-<body>
-<h1>Go Sessions - Page 2</h1>`)
-
-	if username != "" || email != "" || favoriteColor != "" {
-		fmt.Println("<h3>Session Data Retrieved:</h3>")
-		if username != "" {
-			fmt.Printf("<p>Username: %s</p>\n", username)
-		}
-		if email != "" {
-			fmt.Printf("<p>Email: %s</p>\n", email)
-		}
-		if favoriteColor != "" {
-			fmt.Printf("<p>Favorite Color: %s</p>\n", favoriteColor)
-		}
-	} else {
-		fmt.Println("<p>No session data found. Go to Page 1 to set some data.</p>")
-	}
-
-	fmt.Println(`<p><a href='/hw2/go/state-go.cgi?page=1'>Go to Page 1</a></p>
-
-<form action='/hw2/go/state-go.cgi' method='POST'>
-<input type='hidden' name='action' value='destroy'>
-<button type='submit'>Clear Session Data</button>
-</form>
-
-</body>
-</html>`)
-}
-
-func printDestroyPage() {
-	fmt.Println(`<!DOCTYPE html>
-<html>
-<head><title>Go Session Destroyed</title></head>
-<body>
-<h1>Session Destroyed</h1>
-<p>Your session data has been cleared.</p>
-<p><a href='/hw2/go/state-go.cgi?page=1'>Go to Page 1</a></p>
-<p><a href='/hw2/go/state-go.cgi?page=2'>Go to Page 2</a></p>
-</body>
-</html>`)
-}
-
 func main() {
 	method := os.Getenv("REQUEST_METHOD")
 	queryString := os.Getenv("QUERY_STRING")
 	contentType := os.Getenv("CONTENT_TYPE")
 
 	queryParams, _ := url.ParseQuery(queryString)
-	page := queryParams.Get("page")
-	if page == "" {
-		page = "1"
-	}
 
 	sessionID := getSessionIDFromCookie()
 	if sessionID == "" {
@@ -223,33 +111,74 @@ func main() {
 		action = queryParams.Get("action")
 	}
 
-	if action == "destroy" {
+	message := ""
+
+	// Handle actions
+	if action == "clear" {
 		destroySession(sessionID)
-		printHeader(sessionID, true)
-		printDestroyPage()
-		return
+		message = "Session data cleared!"
 	}
 
+	// Load session data (after potential clear)
 	sessionData := loadSession(sessionID)
 
 	if action == "save" {
-		if val := formData["username"]; val != "" {
-			sessionData["username"] = val
+		if val := formData["name"]; val != "" {
+			sessionData["name"] = val
 		}
-		if val := formData["email"]; val != "" {
-			sessionData["email"] = val
-		}
-		if val := formData["favorite_color"]; val != "" {
-			sessionData["favorite_color"] = val
+		if val := formData["message"]; val != "" {
+			sessionData["message"] = val
 		}
 		saveSession(sessionID, sessionData)
+		message = "Data saved!"
 	}
 
-	printHeader(sessionID, false)
+	// Print headers
+	fmt.Println("Cache-Control: no-cache")
+	fmt.Printf("Set-Cookie: GOSESSID=%s; Path=/; Max-Age=%d\n", sessionID, sessionTimeout)
+	fmt.Println("Content-Type: text/html")
+	fmt.Println("")
 
-	if page == "2" {
-		printPage2(sessionData)
-	} else {
-		printPage1(sessionData)
+	// Print page
+	name := escapeHTML(sessionData["name"])
+	msg := escapeHTML(sessionData["message"])
+
+	fmt.Println(`<!DOCTYPE html>
+<html>
+<head><title>Go State Demo</title></head>
+<body>
+<h1>Go State Demo</h1>`)
+
+	if message != "" {
+		fmt.Printf("<p><strong>%s</strong></p>\n", message)
 	}
+
+	if name != "" || msg != "" {
+		fmt.Println("<h3>Saved Data:</h3>")
+		if name != "" {
+			fmt.Printf("<p>Name: %s</p>\n", name)
+		}
+		if msg != "" {
+			fmt.Printf("<p>Message: %s</p>\n", msg)
+		}
+		fmt.Println("<hr>")
+	}
+
+	fmt.Printf(`<form action='/hw2/go/state-go.cgi' method='POST'>
+<input type='hidden' name='action' value='save'>
+<label>Name <input type='text' name='name' value='%s'></label>
+<br><br>
+<label>Message <input type='text' name='message' value='%s'></label>
+<br><br>
+<button type='submit'>Save</button>
+</form>
+
+<br>
+<form action='/hw2/go/state-go.cgi' method='POST'>
+<input type='hidden' name='action' value='clear'>
+<button type='submit'>Clear Data</button>
+</form>
+
+</body>
+</html>`, name, msg)
 }
