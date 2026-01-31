@@ -11,7 +11,8 @@ func main() {
 
 	fmt.Println("Cache-Control: no-cache")
 	fmt.Println("Content-Type: text/html")
-
+	fmt.Println("") 
+	
 	fmt.Println("<!DOCTYPE html>")
 	fmt.Println("<html>")
 	fmt.Println("<head>")

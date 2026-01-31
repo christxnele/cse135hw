@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Echo Form</title>
+</head>
+<body>
+    <h1>Echo Form</h1>
+
+    <!-- JS off -->
+    <form method="POST" action="/hw2/php/echo-php.php">
+    <fieldset>
+        <legend>Reduced Mode (POST)</legend>
+        
+        <label>Field A<input type="text" name="a"></label>
+        <label>Field B<input type="text" name="b"></label>
+
+        <button type="submit">Submit</button>
+    </fieldset>
+    </form>
+
+    <hr>
+
+    <!-- JS on -->
+    <form id="echoForm">
+    <fieldset>
+        <legend>Request</legend>
+
+        <label>Endpoint
+        <select id="endpoint">
+            <option value="/hw2/php/echo-php.php">PHP</option>
+            <option value="/hw2/python/echo-python.py">Python</option>
+            <option value="/hw2/go/echo-go.cgi">Go</option>
+        </select>
+        </label>
+
+        <label>Method
+        <select id="method">
+            <option>GET</option>
+            <option>POST</option>
+            <option>PUT</option>
+            <option>DELETE</option>
+        </select>
+        </label>
+
+        <label>Encoding
+        <select id="encoding">
+            <option value="application/x-www-form-urlencoded">
+            x-www-form-urlencoded
+            </option>
+            <option value="application/json">
+            application/json
+            </option>
+        </select>
+        </label>
+
+        <label>Field A<input id="fieldA" type="text"></label>
+        <label>Field B<input id="fieldB" type="text"></label>
+
+        <button type="submit">Send</button>
+    </fieldset>
+    </form>
+
+    <pre id="output"></pre>
+
+    <script>
+    document.getElementById('echoForm').addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const endpoint = document.getElementById('endpoint').value;
+    const method = document.getElementById('method').value;
+    const encoding = document.getElementById('encoding').value;
+    const a = document.getElementById('fieldA').value;
+    const b = document.getElementById('fieldB').value;
+
+    let url = endpoint;
+    const opts = { method, headers: {} };
+
+    if (method === 'GET') {
+        url += '?' + new URLSearchParams({ a, b });
+    } else if (encoding === 'application/json') {
+        opts.headers['Content-Type'] = 'application/json';
+        opts.body = JSON.stringify({ a, b });
+    } else {
+        opts.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+        opts.body = new URLSearchParams({ a, b }).toString();
+    }
+
+    const res = await fetch(url, opts);
+    document.getElementById('output').textContent = await res.text();
+    });
+    </script>
+
+</body>
+</html>

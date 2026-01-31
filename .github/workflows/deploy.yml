@@ -28,5 +28,5 @@ jobs:
 
           ssh $SERVER_USER@$SERVER_IP "chmod +x /var/www/cse135vrc.site/public_html/hw2/python/*.py"
           ssh $SERVER_USER@$SERVER_IP "chmod +x /var/www/cse135vrc.site/public_html/perl/*.pl"
-          ssh $SERVER_USER@$SERVER_IP “chmod +x /var/www/cse135vrc.site/public_html/hw2/go/*.go”
-          ssh $SERVER_USER@$SERVER_IP “chmod +x /var/www/cse135vrc.site/public_html/hw2/go/*.cgi”
+          ssh $SERVER_USER@$SERVER_IP "chmod +x /var/www/cse135vrc.site/public_html/hw2/go/*.go"
+          ssh $SERVER_USER@$SERVER_IP "chmod +x /var/www/cse135vrc.site/public_html/hw2/go/*.cgi"

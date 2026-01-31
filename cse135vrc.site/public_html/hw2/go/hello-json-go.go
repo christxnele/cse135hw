@@ -8,8 +8,9 @@ import (
 )
 
 func main() {
-	fmt.Println("Cache-Control: no-cache\n")
-	fmt.Println("Content-type: application/json\n")
+	fmt.Println("Cache-Control: no-cache")
+	fmt.Println("Content-type: application/json")
+	fmt.Println("") 
 
 	date := time.Now().Format("Mon Jan 2 15:04:05 2006")
 	address := os.Getenv("REMOTE_ADDR");
