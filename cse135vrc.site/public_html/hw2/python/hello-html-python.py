@@ -3,7 +3,7 @@
 import os
 from datetime import datetime
 
-# Print HTTP headers first (critical for CGI)
+# Print HTTP headers first
 print("Cache-Control: no-cache")
 print("Content-Type: text/html\n")
 
