@@ -2,27 +2,35 @@
 header("Cache-Control: no-cache");
 header("Content-Type: text/html; charset=utf-8");
 
-$cookie = "hw2_state_php";
+$cookie_name = "hw2_state_php";
 
-// Save value
+// Save state
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    setcookie($cookie, $_POST["message"] ?? "", time() + 3600, "/");
-    header("Location: state-view-php.php");
-    exit;
+  $name = $_POST["name"] ?? "";
+  $message = $_POST["message"] ?? "";
+
+  $value = $name . "|" . $message;
+
+  setcookie($cookie_name, $value, time() + 3600, "/");
+  header("Location: state-view-php.php");
+  exit;
 }
 ?>
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-    <title>State Save (PHP)</title>
+    <title>PHP State Demo - Save</title>
 </head>
 <body>
-    <h1>State Demo (PHP) – Save</h1>
+    <h1>PHP State Demo - Save</h1>
 
     <form method="POST">
-        <label>Message
-        <input type="text" name="message" required>
-        </label>
+        <label>Name<input type="text" name="name" required></label>
+        <br><br>
+
+        <label>Message<input type="text" name="message" required></label>
+        <br><br>
+
         <button type="submit">Save</button>
     </form>
 

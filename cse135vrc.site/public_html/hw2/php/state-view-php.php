@@ -2,31 +2,43 @@
 header("Cache-Control: no-cache");
 header("Content-Type: text/html; charset=utf-8");
 
-$cookie = "hw2_state_php";
+$cookie_name = "hw2_state_php";
 
-// Clear when requested
+// Clear state
 if (isset($_GET["clear"]) && $_GET["clear"] === "1") {
-    setcookie($cookie, "", time() - 3600, "/");
-    header("Location: state-view-php.php");
-    exit;
+  setcookie($cookie_name, "", time() - 3600, "/");
+  header("Location: state-view-php.php");
+  exit;
 }
 
-$value = $_COOKIE[$cookie] ?? "";
+$name = "";
+$message = "";
+
+if (isset($_COOKIE[$cookie_name])) {
+    [$name, $message] = explode("|", $_COOKIE[$cookie_name], 2);
+}
 ?>
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-    <title>State View (PHP)</title>
+  <title>PHP State Demo - View</title>
 </head>
 <body>
-    <h1>State Demo (PHP) – View</h1>
 
-    <p>
-        <strong>Saved message:</strong>
-        <?= $value === "" ? "<em>(none)</em>" : htmlspecialchars($value) ?>
-    </p>
+<h1>PHP State Demo - View</h1>
 
-    <p><a href="state-php.php">Back to save</a></p>
-    <p><a href="state-view-php.php?clear=1">Clear saved data</a></p>
+<p>
+  <strong>Name:</strong>
+  <?= $name === "" ? "<em>(none)</em>" : htmlspecialchars($name) ?>
+</p>
+
+<p>
+  <strong>Message:</strong>
+  <?= $message === "" ? "<em>(none)</em>" : htmlspecialchars($message) ?>
+</p>
+
+<p><a href="state-php.php">Back to save</a></p>
+<p><a href="state-view-php.php?clear=1">Clear saved data</a></p>
+
 </body>
 </html>
