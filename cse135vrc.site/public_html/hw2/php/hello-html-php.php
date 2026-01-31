@@ -1,23 +1,23 @@
 <?php
-$team = "Victoria, Ryan, and Christine";
-$language = "PHP";
-$time = date('c');
-$ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+header("Cache-Control: no-cache");
+header("Content-Type: text/html; charset=utf-8");
 
-header('Content-Type: text/html; charset=utf-8');
+$current_time = date("D M d H:i:s Y");
+$ip_address = $_SERVER['REMOTE_ADDR'] ?? 'Unknown';
 ?>
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Hello HTML (PHP)</title>
+    <title>Hello CGI World</title>
 </head>
 <body>
-    <h1>Hello from <?= $team ?></h1>
-    <ul>
-        <li>Language: <?= $language ?></li>
-        <li>Generated at: <?= $time ?></li>
-        <li>Your IP: <?= $ip ?></li>
-    </ul>
+
+<h1 align="center">Hello HTML World</h1><hr/>
+
+<p>Hello from Victoria Timofeev, Christine Le, and Ryan Soe!</p>
+<p>This page was generated with the PHP programming language</p>
+<p>This program was generated at: <?= $current_time ?></p>
+<p>Your current IP Address is: <?= $ip_address ?></p>
+
 </body>
 </html>
