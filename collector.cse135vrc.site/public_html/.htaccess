@@ -10,4 +10,5 @@ Header always set Access-Control-Allow-Credentials "true"
 RewriteEngine On
 RewriteCond %{REQUEST_METHOD} OPTIONS
 RewriteRule ^ - [R=204,L]
+RewriteRule ^collect$ collect.php [L]
 
