@@ -6,18 +6,16 @@
 (function () {
   'use strict';
 
-  // ============================================================
   // CONSTANTS
-  // ============================================================
+
   const SESSION_KEY        = '_cse135_sid';
   const IDLE_THRESHOLD     = 2000;   // ms of no activity before marking idle
   const FLUSH_INTERVAL     = 5000;   // ms between periodic activity flushes
   const MOUSEMOVE_THROTTLE = 100;    // ms between recorded mousemove positions
   const DEFAULT_ENDPOINT   = 'https://collector.cse135vrc.site/collect';
 
-  // ============================================================
   // STATE
-  // ============================================================
+
   let config          = { endpoint: DEFAULT_ENDPOINT, debug: false };
   let sessionId       = null;
   const activityBuffer  = [];
@@ -32,33 +30,32 @@
   let inpValue = 0;
   const inpInteractions = [];
 
-  // ============================================================
   // DEBUG LOGGING
-  // ============================================================
+
   function log(...args) {
     if (config.debug) console.log('[Collector]', ...args);
   }
 
-  // ============================================================
+
   // SESSION MANAGEMENT
-  // ============================================================
+
   function getOrCreateSessionId() {
     let sid = sessionStorage.getItem(SESSION_KEY);
     if (!sid) {
       sid = Math.random().toString(36).substring(2) + Date.now().toString(36);
       sessionStorage.setItem(SESSION_KEY, sid);
     }
-    // Also set as a first-party cookie on the host page's domain so that
-    // server-side Apache/Nginx logs will record it, enabling log correlation.
+    // also set as a first-party cookie on the host page's domain so that server-side 
+    // Apache/Nginx logs will record it, enabling log correlation.
     try {
       document.cookie = SESSION_KEY + '=' + sid + '; path=/; SameSite=Lax';
     } catch (e) { /* ignore cookie errors */ }
     return sid;
   }
 
-  // ============================================================
+
   // TRANSPORT
-  // ============================================================
+
   function send(payload) {
     payload.session = sessionId;
     if (config.debug) {
@@ -91,15 +88,15 @@
     });
   }
 
-  // ============================================================
+
   // FEATURE DETECTION
-  // ============================================================
+
   function detectImages() {
     return new Promise(function (resolve) {
       const img = new Image();
       img.onload  = function () { resolve(true); };
       img.onerror = function () { resolve(false); };
-      // Smallest valid GIF (1×1 transparent)
+      // smallest valid GIF (1×1 transparent)
       img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
     });
   }
@@ -117,9 +114,9 @@
     }
   }
 
-  // ============================================================
+
   // STATIC DATA
-  // ============================================================
+
   async function collectStaticData() {
     let networkInfo = {};
     if ('connection' in navigator) {
@@ -138,7 +135,7 @@
       userAgent:        navigator.userAgent,
       language:         navigator.language,
       cookiesEnabled:   navigator.cookieEnabled,
-      javascriptEnabled: true,   // trivially true — this code is running
+      javascriptEnabled: true, 
       imagesEnabled:    imagesEnabled,
       cssEnabled:       detectCSS(),
       screenWidth:      window.screen.width,
@@ -149,9 +146,9 @@
     };
   }
 
-  // ============================================================
+
   // PERFORMANCE DATA
-  // ============================================================
+
   function collectPerformanceData() {
     const entries = performance.getEntriesByType('navigation');
     if (!entries.length) return {};
@@ -159,7 +156,7 @@
     const nav = entries[0];
     const origin = performance.timeOrigin;
 
-    // Collect detailed breakdown as well (from Module 05)
+
     function round(n) { return Math.round(n * 100) / 100; }
 
     return {
@@ -181,9 +178,9 @@
     };
   }
 
-  // ============================================================
-  // ERROR TRACKING  (Module 07)
-  // ============================================================
+
+  // ERROR TRACKING  
+
   function setupErrorTracking() {
     // JS runtime errors
     window.addEventListener('error', function (event) {
@@ -229,13 +226,13 @@
     }, true /* capture phase */);
   }
 
-  // ============================================================
+
   // IDLE DETECTION
-  // ============================================================
+
   function onActivity() {
     const now = Date.now();
 
-    // If we were idle, record the idle period
+    // If user is idle, record the idle period
     if (idleStartTime !== null) {
       activityBuffer.push({
         type:        'idle',
@@ -251,11 +248,11 @@
     }, IDLE_THRESHOLD);
   }
 
-  // ============================================================
-  // ACTIVITY TRACKING  (Module 02 + homework spec)
-  // ============================================================
+
+  // ACTIVITY TRACKING  
+
   function setupActivityTracking() {
-    // Mousemove — throttled to reduce data volume
+    // mousemovent
     document.addEventListener('mousemove', function (e) {
       onActivity();
       const now = Date.now();
@@ -270,7 +267,7 @@
       }
     }, { passive: true });
 
-    // Click — record which button
+    // click — record which button
     document.addEventListener('click', function (e) {
       onActivity();
       activityBuffer.push({
@@ -282,7 +279,7 @@
       });
     });
 
-    // Scroll — record scroll coordinates
+    // scroll — record scroll coordinates
     window.addEventListener('scroll', function () {
       onActivity();
       activityBuffer.push({
@@ -293,7 +290,7 @@
       });
     }, { passive: true });
 
-    // Keydown
+    // keydown
     document.addEventListener('keydown', function (e) {
       onActivity();
       activityBuffer.push({
@@ -304,7 +301,7 @@
       });
     });
 
-    // Keyup
+    // keyup
     document.addEventListener('keyup', function (e) {
       onActivity();
       activityBuffer.push({
@@ -315,19 +312,19 @@
       });
     });
 
-    // Kick off the initial idle timer
+    // kick off the initial idle timer
     idleTimer = setTimeout(function () {
       idleStartTime = Date.now();
     }, IDLE_THRESHOLD);
   }
 
-  // ============================================================
-  // WEB VITALS  (Module 06)
-  // ============================================================
+
+  // WEB VITALS  
+
   function setupVitalsObservers() {
     if (typeof PerformanceObserver === 'undefined') return;
 
-    // LCP — Largest Contentful Paint
+    // LCP 
     try {
       new PerformanceObserver(function (list) {
         const entries = list.getEntries();
@@ -336,7 +333,7 @@
       }).observe({ type: 'largest-contentful-paint', buffered: true });
     } catch (e) { /* unsupported */ }
 
-    // CLS — Cumulative Layout Shift
+    // CLS
     try {
       new PerformanceObserver(function (list) {
         for (const entry of list.getEntries()) {
@@ -345,7 +342,7 @@
       }).observe({ type: 'layout-shift', buffered: true });
     } catch (e) { /* unsupported */ }
 
-    // INP — Interaction to Next Paint
+    // INP
     try {
       new PerformanceObserver(function (list) {
         for (const entry of list.getEntries()) {
@@ -382,9 +379,9 @@
     });
   }
 
-  // ============================================================
+
   // PAGE LIFECYCLE
-  // ============================================================
+
   function setupPageLifecycle() {
     document.addEventListener('visibilitychange', function () {
       if (document.visibilityState === 'hidden') {
@@ -415,9 +412,8 @@
     });
   }
 
-  // ============================================================
   // MAIN INITIALIZATION
-  // ============================================================
+
   async function init(options) {
     // Merge any provided options into config
     if (options) {
@@ -427,7 +423,7 @@
 
     sessionId = getOrCreateSessionId();
 
-    // Set up tracking immediately (before page load)
+    // set up tracking immediately before page load
     setupErrorTracking();
     setupActivityTracking();
     setupVitalsObservers();
@@ -471,11 +467,10 @@
     });
   }
 
-  // ============================================================
-  // COMMAND QUEUE  (Module 10)
-  // Supports: window._cq = [['init', {endpoint: '...'}]]
-  // placed before this <script> tag in the HTML.
-  // ============================================================
+
+  // COMMAND QUEUE  
+
+
   function processQueue() {
     const queue = window._cq || [];
     if (Array.isArray(queue)) {
@@ -500,9 +495,9 @@
     };
   }
 
-  // ============================================================
+
   // ENTRY POINT
-  // ============================================================
+
   // If the page pre-configured a command queue, process it (and let it call init).
   // Otherwise auto-initialize with defaults.
   if (window._cq && Array.isArray(window._cq) && window._cq.length) {

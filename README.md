@@ -6,9 +6,9 @@
 
 ## The password for user "grader" on your Apache server
 
-ssh grader@142.93.88.250
+ssh grader@146.190.150.30
 
-password: grader
+password: CSE135rocks
 
 ## Link to our site, which has:
 https://cse135vrc.site
@@ -34,7 +34,7 @@ Username: christine
 Password: christine
 
 Username: grader  
-Password: grader
+Password: ilovecse135
 
 ## 3rd party analytics discussion
 We chose Plausible Analytics, because it emphasizes privacy with aggregate metrics rather than individual user tracking. The setup process was simple and appears to work well with low traffic.
