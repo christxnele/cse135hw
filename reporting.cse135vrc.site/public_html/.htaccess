@@ -4,3 +4,6 @@ AuthUserFile /etc/apache2/.htpasswd
 Require valid-user
 ErrorDocument 404 /new404.html
 
+RewriteEngine On
+RewriteRule ^api(/.*)?$ api.php [QSA,L]
+
